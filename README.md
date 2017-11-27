@@ -4,7 +4,7 @@ This is a simple azure website that shows how to visualize data from eventhub as
 
 ## Acknowledgements
 
-This code was modified from the sample[ThingLabs-IoT-Dashboard](https://github.com/ThingLabsIo/ThingLabs-IoT-Dashboard)
+This code was modified from the sample [ThingLabs-IoT-Dashboard](https://github.com/ThingLabsIo/ThingLabs-IoT-Dashboard)
 
 
 
