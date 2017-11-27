@@ -22,8 +22,6 @@ WITH ProcessedData as (
         System.Timestamp AS Timestamp
     FROM
         [inputdata]
---    WHERE 
---        DeviceId = 'sparkfun'
     GROUP BY
         TumblingWindow (second, 15), DeviceId, Geo
 )
