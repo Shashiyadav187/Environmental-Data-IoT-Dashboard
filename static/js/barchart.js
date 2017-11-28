@@ -1,39 +1,35 @@
 var io = io.connect();
 
 var chart = c3.generate({
-  bindto: '#graph',
+  bindto: '#barchart',
   data: {
-    x: 'x',
     columns: [
-    ]
+    ],
+    type: 'bar'
   },
-  axis: {
-    x: {
-      type: 'timeseries',
-      tick: {
-        format: '%X'
-      }
+  bar: {
+    width: {
+      ratio: 0.5 // this makes bar width 50% of length between ticks
     }
+    // or
+    //width: 100 // this makes bar width 100px
   }
 });
 
 
-var DATA_POINT_COUNT = 20;
+var DATA_POINT_COUNT = 2;
 var labels = [];
 var columns = [];
 var geolocation = [];
 
-function roundToOne(num) {    
-  return +(Math.round(num + "e+1")  + "e-1");
+function roundToOne(num) {
+  return +(Math.round(num + "e+1") + "e-1");
 }
 
 var appendColumn = function (index, label, value) {
   if (!value) {
     console.log('value is null ' + label + ' is skipped');
   } else {
-    if (columns.length <= index) {
-      columns.push([label]);
-    }
     columns[index].push(value);
     if (columns[index].length > DATA_POINT_COUNT) {
       columns[index].splice(1, 1);
@@ -46,6 +42,8 @@ var addLabel = function (data) {
   if (a == -1) {
     labels.push(data.deviceid);
     a = labels.length - 1;
+    columns[a] = [];
+    columns[a].push(data.deviceid);
   }
   return a;
 }
@@ -53,11 +51,11 @@ var addLabel = function (data) {
 io.on('data', function (incomingData) {
   var pos = addLabel(incomingData);
 
+  var e = document.getElementById('lastupdated');
+  e.innerText = Date();
+
   if (incomingData.timestamp) {
-
-    appendColumn(0, 'x', new Date(incomingData.timestamp));
-    appendColumn(pos + 1, labels[pos], roundToOne(incomingData.avgtemperature));
-
+    appendColumn(pos, labels[pos], roundToOne(incomingData.avgtemperature));
   } else {
     console.log('bad timestamp is skipped');
   }

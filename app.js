@@ -3,11 +3,17 @@ var uuid = require('uuid');
 var EventHubClient = require('azure-event-hubs').Client;
 var IotHubClient = require('azure-iothub').Client;
 var Message = require('azure-iot-common').Message;
+try {
+  // https://stackoverflow.com/questions/22312671/node-js-setting-environment-variables
+  // load environment variables from .env file - used for dev only.
+  require('dotenv').config();
+}
+catch (err){};
 
 app = express().http().io()
 
-var iotHubConnectionString = process.env.THINGLABS_IOTHUB_CONNSTRING || 'HostName=IoTCampAU.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=J8Lx/t/6nM+ZSFzhSi7/IH/x/8Ym1PLgJrJFGvloRTY='
-var eventHubConnectionString = process.env.THINGLABS_EVENTHUB_CONNSTRING || 'Endpoint=sb://glovebox01.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=Tgm61jZqz59KzMZKg43uxPRm2N35Lv0hLYj1wr4QP6o='
+var iotHubConnectionString = process.env.THINGLABS_IOTHUB_CONNSTRING || ''
+var eventHubConnectionString = process.env.THINGLABS_EVENTHUB_CONNSTRING || ''
 var eventHubName = process.env.THINGLABS_EVENTHUBNAME || 'thinglabseventhub'
 var client = EventHubClient.fromConnectionString(eventHubConnectionString, eventHubName)
 
